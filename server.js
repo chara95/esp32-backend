@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
   res.send("✅ API ESP32 funcionando!");
 });
 
-// Endpoint para recibir datos del ESP32
+// 📌 Endpoint para recibir datos del ESP32
 app.post("/api/esp32", (req, res) => {
   const { chip_id, user_id } = req.body;
 
@@ -27,8 +27,22 @@ app.post("/api/esp32", (req, res) => {
   console.log("User ID:", user_id);
 
   // 🔹 Aquí luego podemos guardar en Firebase o MongoDB
-
   res.json({ success: true, message: "Datos recibidos correctamente" });
+});
+
+// 📌 Endpoint de heartbeat (para monitoreo rápido)
+app.post("/api/device/heartbeat", (req, res) => {
+  const { chip_id, user_id } = req.body;
+
+  if (!chip_id || !user_id) {
+    return res.status(400).json({ error: "Faltan datos" });
+  }
+
+  console.log("💓 Heartbeat recibido:");
+  console.log("Chip ID:", chip_id);
+  console.log("User ID:", user_id);
+
+  res.json({ ok: true, message: "Heartbeat OK", chip_id, user_id });
 });
 
 // Iniciar servidor
